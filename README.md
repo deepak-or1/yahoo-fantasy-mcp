@@ -35,12 +35,15 @@ In the Vercel project: Storage → Create Database → Upstash Redis (Marketplac
 
 At https://developer.yahoo.com/apps/create/:
 
-- Application Name: anything.
-- Application Type: Web Application.
+- Application Name: anything without the word "Yahoo" (the form rejects it).
+- Homepage URL: `https://<your-app>.vercel.app`. The domain must not contain "yahoo" either.
 - Redirect URI(s): `https://<your-app>.vercel.app/api/yahoo/callback` (exact, no trailing slash).
-- API Permissions: Fantasy Sports, with Read selected.
+- OAuth Client Type: Confidential Client.
+- API Permissions: leave unticked. Fantasy Sports is no longer offered here.
 
 Save, then copy the Client ID and Client Secret.
+
+**Fantasy API access is no longer self-serve.** Since July 22, 2026 every app, old or new, gets `401 additional_authorization_required` or `403 This application is not authorized` from `fantasysports.yahooapis.com` until Yahoo approves it through https://sports.yahoo.com/developer/access/. The form asks for the product, the data needed, expected users and the Client ID from step 4. Until approval, sign-in works but every tool returns that error. Background: [yfpy issue 84](https://github.com/uberfastman/yfpy/issues/84), [fantasy-football-mcp issue 18](https://github.com/derekrbreese/fantasy-football-mcp-public/issues/18).
 
 ### 5. Set the environment variables
 
@@ -51,7 +54,7 @@ In the Vercel project: Settings → Environment Variables. Add for Production:
 | `YAHOO_CLIENT_ID` | from step 4 |
 | `YAHOO_CLIENT_SECRET` | from step 4 |
 | `TOKEN_ENCRYPTION_KEY` | output of `openssl rand -base64 32` |
-| `PUBLIC_BASE_URL` | `https://<your-app>.vercel.app` |
+| `PUBLIC_BASE_URL` | `https://<your-app>.vercel.app` (type Config, not Secret: Vercel refuses a secret with a `PUBLIC_` prefix) |
 
 Redeploy (Deployments → ⋯ → Redeploy). Open the URL: the landing page shows the MCP URL to paste into ChatGPT or Claude.
 
